@@ -22,7 +22,7 @@ def make_dict_from_sentence_id_to_char_ids(txt):
     sentence_id_to_char_ids_dict = {}
     df = pandas.read_csv(txt, delimiter='\t')
     for (sentence_id, yomi) in zip(df['sentence_id'], df['yomi']):
-        sentence_id = '{0:03d}'.format(sentence_id)
+        sentence_id = '{0:03d}'.format(int(sentence_id))
         chars = []
         for char in yomi:
             chars += [str_to_int(char)]

@@ -28,7 +28,7 @@ def get_sentence_id(path, output_cast=int):
 
 root_dir = pathlib.Path(params.root)
 preprocessed_dir = root_dir.parent.joinpath('preprocessed')
-preprocessed_dir.mkdir(mode=755, exist_ok=True)
+preprocessed_dir.mkdir(mode=0o0755, exist_ok=True)
 
 wav_paths = root_dir.glob('*/*.wav')
 
@@ -45,7 +45,7 @@ for wav_path in tqdm.tqdm(wav_paths, total=900):
         preprocessed_dir, wav_path)
     if not preprocessed_path.exists():
         preprocessed, _ = librosa.load(wav_path, SAMPLING_RATE)
-        preprocessed_path.parent.mkdir(mode=755, exist_ok=True)
+        preprocessed_path.parent.mkdir(mode=0o0755, exist_ok=True)
         librosa.output.write_wav(
             preprocessed_path, preprocessed, SAMPLING_RATE)
 

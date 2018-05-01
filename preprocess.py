@@ -1,19 +1,24 @@
 import pathlib
 
 import tqdm
+import numpy
 import pandas
 import librosa
 
 import params
 
 SAMPLING_RATE = 16000
+MAX_VALUE = numpy.iinfo(numpy.int16).max
 
 
 def convert_to_hiraganas(katakanas):
     hiraganas = ''
     for katakana in katakanas:
-        if ord(katakana) == 12540:  # 12540 means "-"
+        if katakana == 'ー':
             hiraganas += katakana
+        elif katakana == 'ヴ':
+            hiraganas += 'う'
+            hiraganas += '゛'
         else:
             hiraganas += chr(ord(katakana) - 0x60)
     return hiraganas
@@ -47,7 +52,8 @@ for wav_path in tqdm.tqdm(wav_paths, total=900):
         preprocessed, _ = librosa.load(wav_path, SAMPLING_RATE)
         preprocessed_path.parent.mkdir(mode=0o0755, exist_ok=True)
         librosa.output.write_wav(
-            preprocessed_path, preprocessed, SAMPLING_RATE)
+            preprocessed_path, (preprocessed * MAX_VALUE).astype(numpy.int16),
+            SAMPLING_RATE)
 
     yomi_path = preprocessed_path.with_name(preprocessed_path.stem + '.txt')
     if not yomi_path.exists():

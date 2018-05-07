@@ -58,5 +58,5 @@ for wav_path in tqdm.tqdm(wav_paths, total=900):
     yomi_path = preprocessed_path.with_name(preprocessed_path.stem + '.txt')
     if not yomi_path.exists():
         yomi = sentence_id_to_hiragana_dic[get_sentence_id(wav_path)]
-        with open(yomi_path, 'w') as f:
+        with open(yomi_path, 'w', encoding='utf-8') as f:
             f.write(yomi)
